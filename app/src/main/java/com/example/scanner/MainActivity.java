@@ -1,28 +1,20 @@
 package com.example.scanner;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.autofill.AutofillValue;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.scanner.controller.ScannerController;
-import com.example.scanner.impl.ISerialPortDataListenerImple;
 
 import java.util.List;
-
-import me.f1reking.serialportlib.SerialPortHelper;
 
 public class MainActivity extends AppCompatActivity {
     private ScannerController scannerController = new ScannerController();

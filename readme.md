@@ -3,6 +3,6 @@
 apk: [apk download](demo/app-release.apk)
 
 
-[!](demo/demo.jpg)
+![](https://raw.githubusercontent.com/sazima/android-bar-code-scanners/master/demo/demo.jpg)
 
 
