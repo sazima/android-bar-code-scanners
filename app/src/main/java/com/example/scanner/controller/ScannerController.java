@@ -25,13 +25,17 @@ public class ScannerController {
         return nameList;
     }
 
-    public void open(String portName, Integer baudRateValue) {
+    public boolean open(String portName, Integer baudRateValue) {
         if (opendSerialPortHelper != null) {
             opendSerialPortHelper.close();
         }
         SerialPortHelper serialPortHelper = new SerialPortHelper.Builder(portName, baudRateValue).build();
-        serialPortHelper.open();
+        boolean open = serialPortHelper.open();
+        if (!open) {
+            return false;
+        }
         serialPortHelper.setISerialPortDataListener(new ISerialPortDataListenerImple());
         opendSerialPortHelper = serialPortHelper;
+        return true;
     }
 }

@@ -1,8 +1,10 @@
 package com.example.scanner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -27,33 +29,57 @@ public class MainActivity extends AppCompatActivity {
 
     public static EditText showResultView;
 
+    private Spinner dropdown;
+
+    private EditText baudRateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dropdown = findViewById(R.id.spinner);
+        baudRateTextView = (EditText)findViewById(R.id.baudRate);
+//        baudRateTextView.setTextColor(getResources().getColor(R.color.black));
+        baudRateTextView.setText("9600");
+        showResultView = (EditText)findViewById(R.id.showResult);
         showSpine();
     }
 
 
     public void showSpine() {
-        Spinner dropdown = findViewById(R.id.spinner);
-        EditText baudRateTextView = (EditText)findViewById(R.id.baudRate);
-        baudRateTextView.setTextColor(getResources().getColor(R.color.black));
-        baudRateTextView.setText("9600");
-        showResultView = (EditText)findViewById(R.id.showResult);
         List<String> items = scannerController.listDevice();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
     }
 
     public void clickStartButton(View view) {
-        Spinner dropdown = findViewById(R.id.spinner);
-        String portName = dropdown.getSelectedItem().toString();
-        EditText baudRateTextView = (EditText)findViewById(R.id.baudRate);
-        String baudRateValueStr = ((SpannableStringBuilder) baudRateTextView.getText()).toString();
-        Integer baudRateValue = Integer.valueOf(baudRateValueStr);
-        scannerController.open(portName, baudRateValue);
+        Object selectedItem = dropdown.getSelectedItem();
+        if (null == selectedItem) {
+            alert("please select port name");
+        } else {
+            String portName = selectedItem.toString();
+            String baudRateValueStr = ((SpannableStringBuilder) baudRateTextView.getText()).toString();
+            Integer baudRateValue = Integer.valueOf(baudRateValueStr);
+            boolean open = scannerController.open(portName, baudRateValue);
+            if (!open) {
+                alert("open error");
+            }
+        }
     }
+
+    private void alert(String msg) {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("error")
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+    }
+
 
 
     public static void disableSoftInputFromAppearing(EditText editText_input_field) {
